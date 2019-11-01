@@ -148,8 +148,13 @@ def station_stats(df):
 
     # display most commonly used start station
     print('The most commonly used start station is: ')
-    print(df.start_station.mode())
 
+    ##todo trying to cast this is a string to remove the object formatting but doesn't work
+    comm_start_station = str(df.start_station.mode())
+    print(comm_start_station)
+
+    #checking to see type of above.  It is a string but haven't removed the object formatting
+    print(type(comm_start_station))
 
     # display most commonly used end station
     print('The most commonly used end station is: ')
