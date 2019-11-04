@@ -27,7 +27,7 @@ def get_filters():
     city = input("What city would you like to analyze? Name city - Chicago, New York City or Washington: ").lower()
     while city not in('chicago', 'new york city', 'washington'):
         print('You got it wrong pls try again')
-        city = input("What city would you like to analyze? Name city, or type 'All' ").lower()
+        city = input("What city would you like to analyze? Name city - Chicago, New York City or Washington ").lower()
 
 
     # get user input for month (all, january, february, ... , june)
@@ -70,6 +70,9 @@ def load_data(city, month, day):
     # extract month and day of week from Start Time to create new columns
     df['month'] = df['Start Time'].dt.month
     df['day_of_week'] = df['Start Time'].dt.weekday_name
+
+    #set NaN values as none.
+    
 
     # filter by month if applicable
     if month != 'all':
@@ -225,6 +228,13 @@ def user_stats(df):
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
+
+    #print first 5 rows of df
+    print('Would you like to see the first 5 rows?  Here they are:  ')
+    x = 0
+    y = 5
+    print(df.iloc[x:y])
+    print('test - the above figure comes from iloc')
 
 def main():
     while True:
