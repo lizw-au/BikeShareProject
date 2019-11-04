@@ -71,8 +71,8 @@ def load_data(city, month, day):
     df['month'] = df['Start Time'].dt.month
     df['day_of_week'] = df['Start Time'].dt.weekday_name
 
-    #set NaN values as none.
-    
+
+
 
     # filter by month if applicable
     if month != 'all':
@@ -127,6 +127,11 @@ def station_stats(df):
     df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
     """Displays statistics on the most popular stations and trip."""
 
+    #fill NaN (trying with no value passed to mathod first)
+    #df.fillna(value=None)
+
+    #set birth_year column as an int
+    #df.astype({'birth_year':'int64'}).dtypes
 
         #<class 'pandas.core.frame.DataFrame'>
         #Int64Index: 76022 entries, 0 to 299985
@@ -143,6 +148,19 @@ def station_stats(df):
         #month            76022 non-null int64
         #day_of_week      76022 non-null object
         #dtypes: datetime64[ns](1), float64(1), int64(3), object(6)
+
+    #set NaN values as interpolated.
+    print('WORKING ON NAN VALUES')
+    print(df['birth_year'].value_counts())
+
+    print('\n HOw many year of birth is set as NOT NULL?')
+    print(df['birth_year'].count())
+
+
+    #print info on DataFrame
+    print('\n \n most current state of dataframe info as follows: \n')
+    df.info()
+
 
     print('\nCalculating The Most Popular Stations and Trip...\n')
 
@@ -213,17 +231,17 @@ def user_stats(df):
 
 
     # Display earliest, most recent, and most common year of birth
-    print('Earliest year of birth: ')
-    min_yob = int(df.birth_year.min())
-    print(min_yob)
+    print('Earliest year of birth:')
+    min_yob = df.birth_year.min()
+    print(round(min_yob))
 
     print('Max year of birth: ')
-    max_yob = int(df.birth_year.max())
-    print(max_yob)
+    max_yob = df.birth_year.max()
+    print(round(max_yob))
 
     print('Most common year of birth: ')
-    mod_yob = int(df.birth_year.mode())
-    print(mod_yob)
+    mod_yob = df.birth_year.mode()
+    print(round(mod_yob))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
