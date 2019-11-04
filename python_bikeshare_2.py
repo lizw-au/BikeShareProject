@@ -72,8 +72,6 @@ def load_data(city, month, day):
     df['day_of_week'] = df['Start Time'].dt.weekday_name
 
 
-
-
     # filter by month if applicable
     if month != 'all':
         # use the index of the months list to get the corresponding int
@@ -107,16 +105,16 @@ def time_stats(df):
     # display the most common month
     ##use mode
     print("the most common month for bike hire is: ")
-    print(df.month.mode())
+    print(df.month.mode().iloc[0])
 
     # display the most common day of week
     ##today print days out as day instead of number
     print("the most common day of the week is: ")
-    print(df.day_of_week.mode())
+    print(df.day_of_week.mode().iloc[0])
 
     # display the most common start hour
     print("the most common start hour is: ")
-    print(df.start_time.mode())
+    print(df.start_time.mode().iloc[0])
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -150,11 +148,11 @@ def station_stats(df):
         #dtypes: datetime64[ns](1), float64(1), int64(3), object(6)
 
     #set NaN values as interpolated.
-    print('WORKING ON NAN VALUES')
-    print(df['birth_year'].value_counts())
+    #print('WORKING ON NAN VALUES')
+    #print(df['birth_year'].value_counts())
 
-    print('\n HOw many year of birth is set as NOT NULL?')
-    print(df['birth_year'].count())
+    #print('\n HOw many year of birth is set as NOT NULL?')
+    #print(df['birth_year'].count())
 
 
     #print info on DataFrame
@@ -168,21 +166,16 @@ def station_stats(df):
     start_time = time.time()
 
     # display most commonly used start station
-    print('The most commonly used start station is: ')
+    print('\nThe most commonly used start station is: ')
+    print(df.start_station.mode().iloc[0])
 
-    ##todo trying to cast this is a string to remove the object formatting but doesn't work
-    comm_start_station = str(df.start_station.mode())
-    print(comm_start_station)
-
-    #checking to see type of above.  It is a string but haven't removed the object formatting
-    print(type(comm_start_station))
 
     # display most commonly used end station
-    print('The most commonly used end station is: ')
-    print(df.end_station.mode())
+    print('\nThe most commonly used end station is: ')
+    print(df.end_station.mode().iloc[0])
 
     # display most frequent combination of start station and end station trip
-
+    print('\nThe most frequent combo of start and end station is: ')
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -215,12 +208,16 @@ def user_stats(df):
     ##clean up column headings
     df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
 
+    #set birth_year column as Int64
+    df['birth_year'] = df['birth_year'].astype(pd.Int64Dtype())
+
     print('\nCalculating User Stats...\n')
     start_time = time.time()
 
     # Display counts of user types
     print("Count of user type as follows: ")
     print(df.groupby('user_type').count())
+
 
     ## TO DO - this paused program... I'm guessing with the Y axis code
     ##df.plot(x ='user_type', y=('user_type').count('user_type'), kind = 'bar')
@@ -233,15 +230,15 @@ def user_stats(df):
     # Display earliest, most recent, and most common year of birth
     print('Earliest year of birth:')
     min_yob = df.birth_year.min()
-    print(round(min_yob))
+    print(min_yob)
 
     print('Max year of birth: ')
     max_yob = df.birth_year.max()
-    print(round(max_yob))
+    print(max_yob)
 
     print('Most common year of birth: ')
-    mod_yob = df.birth_year.mode()
-    print(round(mod_yob))
+    mod_yob = df.birth_year.mode().iloc[0]
+    print(mod_yob)
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
