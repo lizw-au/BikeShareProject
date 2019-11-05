@@ -164,7 +164,7 @@ def station_stats(df):
     print('\nThe most frequent combo of start and end station is: ')
 
     #create new column with start and end stations
-    df['start_and_end_station'] = df['start_station'] + ' ' + df['end_station']
+    df['start_and_end_station'] = df['start_station'] + ' - travel to - ' + df['end_station']
     print(df.start_and_end_station.mode().iloc[0])
 
     print("\nThis took %s seconds." % (time.time() - start_time))
@@ -213,16 +213,16 @@ def user_stats(df):
     print('\nCalculating User Stats...\n')
     start_time = time.time()
 
-    # Display counts of user types
+    # Display counts of user types - output convert to string to remove dtype fomatting.
     print("\n\nCount of user type as follows: ")
-    print(df['user_type'].value_counts())
+    print(df['user_type'].value_counts().to_string())
 
     ## TO DO - this paused program... I'm guessing with the Y axis code
     ##df.plot(x ='user_type', y=('user_type').count('user_type'), kind = 'bar')
 
     # Display counts of gender
     print("\n\nCount of gender as follows: ")
-    print(df.groupby('gender').size())
+    print(df.groupby('gender').size().to_string())
 
     # Display earliest, most recent, and most common year of birth
     print('\n\nEarliest year of birth:')
