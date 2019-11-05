@@ -163,6 +163,10 @@ def station_stats(df):
     # display most frequent combination of start station and end station trip
     print('\nThe most frequent combo of start and end station is: ')
 
+    #create new column with start and end stations
+    df['start_and_end_station'] = df['start_station'] + ' ' + df['end_station']
+    print(df.start_and_end_station.mode().iloc[0])
+
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
@@ -177,12 +181,12 @@ def trip_duration_stats(df):
     start_time = time.time()
 
     # display total travel time
-    print('\nThe total travel time is: ')
-    print(df.trip_duration.sum())
+    print('\nThe total hours travel time is: ')
+    print(round((df.trip_duration.sum()/60)/60))
 
     # display mean travel time
-    print('\nThe mean travel time is: ')
-    print(df.trip_duration.mean())
+    print('\nThe average travel time in minutes is: ')
+    print(round((df.trip_duration.mean()/60), 2))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -211,7 +215,7 @@ def user_stats(df):
 
     # Display counts of user types
     print("\n\nCount of user type as follows: ")
-    print(df.groupby('user_type').count())
+    print(df['user_type'].value_counts())
 
     ## TO DO - this paused program... I'm guessing with the Y axis code
     ##df.plot(x ='user_type', y=('user_type').count('user_type'), kind = 'bar')
