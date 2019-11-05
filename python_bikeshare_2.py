@@ -31,10 +31,10 @@ def get_filters():
 
 
     # get user input for month (all, january, february, ... , june)
-    month = input("What month would you like to analyze? Name one month, or type 'All' ").lower()
-    while month not in('january', 'febuary', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'all'):
-        print('that\'s not a month')
-        month = input("What month would you like to analyze? Name one month, or type 'All' ").lower()
+    month = input("What month would you like to analyze? Name one month, or type 'All'. Only January to June are available ").lower()
+    while month not in('january', 'febuary', 'march', 'april', 'may', 'june','all'):
+        print('that\'s not a month - remember only first 6 month are available')
+        month = input("What month would you like to analyze? Name one month, or type 'All'. Only January to June are available ").lower()
 
     #get day input
     day = input("What day of week would you like to analyze? Name one day, or type 'All' ").lower()
@@ -97,7 +97,7 @@ def time_stats(df):
     """Displays statistics on the most frequent times of travel."""
 
     ##clean up column headings
-    df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
+    #df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
 
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
@@ -122,14 +122,8 @@ def time_stats(df):
 
 def station_stats(df):
     ##clean up column headings
-    df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
+    #df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
     """Displays statistics on the most popular stations and trip."""
-
-    #fill NaN (trying with no value passed to mathod first)
-    #df.fillna(value=None)
-
-    #set birth_year column as an int
-    #df.astype({'birth_year':'int64'}).dtypes
 
         #<class 'pandas.core.frame.DataFrame'>
         #Int64Index: 76022 entries, 0 to 299985
@@ -147,21 +141,13 @@ def station_stats(df):
         #day_of_week      76022 non-null object
         #dtypes: datetime64[ns](1), float64(1), int64(3), object(6)
 
-    #set NaN values as interpolated.
-    #print('WORKING ON NAN VALUES')
-    #print(df['birth_year'].value_counts())
-
-    #print('\n HOw many year of birth is set as NOT NULL?')
-    #print(df['birth_year'].count())
 
 
     #print info on DataFrame
     print('\n \n most current state of dataframe info as follows: \n')
     df.info()
 
-
     print('\nCalculating The Most Popular Stations and Trip...\n')
-
 
     start_time = time.time()
 
@@ -185,81 +171,113 @@ def trip_duration_stats(df):
     """Displays statistics on the total and average trip duration."""
 
     ##clean up column headings
-    df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
+    #df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
 
     print('\nCalculating Trip Duration...\n')
     start_time = time.time()
 
     # display total travel time
-    print('The total travel time is: ')
+    print('\nThe total travel time is: ')
     print(df.trip_duration.sum())
 
     # display mean travel time
-    print('The mean travel time is: ')
+    print('\nThe mean travel time is: ')
     print(df.trip_duration.mean())
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
-
-def user_stats(df):
-    """Displays statistics on bikeshare users."""
+def tidy_data(df):
+    #"""A function to tidy the data for review analysis."""
 
     ##clean up column headings
     df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
 
-    #set birth_year column as Int64
+    #if city != 'washington':
+        #set birth_year column as Int64 - Moved to tidy_data(df) function
+    #    df['birth_year'] = df['birth_year'].astype(pd.Int64Dtype())
+
+def user_stats(df):
+    """Displays statistics on bikeshare users."""
+
+    ##clean up column headings - this has been moved to tidy_data(df) function
+    #df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
+
+    #set birth_year column as Int64 - Moved to tidy_data(df) function (removed since doesn't work for Washington)
     df['birth_year'] = df['birth_year'].astype(pd.Int64Dtype())
 
     print('\nCalculating User Stats...\n')
     start_time = time.time()
 
     # Display counts of user types
-    print("Count of user type as follows: ")
+    print("\n\nCount of user type as follows: ")
     print(df.groupby('user_type').count())
-
 
     ## TO DO - this paused program... I'm guessing with the Y axis code
     ##df.plot(x ='user_type', y=('user_type').count('user_type'), kind = 'bar')
 
     # Display counts of gender
-    print("Count of gender as follows: ")
+    print("\n\nCount of gender as follows: ")
     print(df.groupby('gender').size())
 
-
     # Display earliest, most recent, and most common year of birth
-    print('Earliest year of birth:')
+    print('\n\nEarliest year of birth:')
     min_yob = df.birth_year.min()
     print(min_yob)
 
-    print('Max year of birth: ')
+    print('\n\nMax year of birth: ')
     max_yob = df.birth_year.max()
     print(max_yob)
 
-    print('Most common year of birth: ')
+    print('\n\nMost common year of birth: ')
     mod_yob = df.birth_year.mode().iloc[0]
     print(mod_yob)
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
-
+def display_raw_data(df):
     #print first 5 rows of df
-    print('Would you like to see the first 5 rows?  Here they are:  ')
+    show_5rows = input('Would you like to see the first five rows? Yes?  ').lower()
+
+    #variables to decide which 5 rows to print.
     x = 0
     y = 5
-    print(df.iloc[x:y])
-    print('test - the above figure comes from iloc')
+
+    #while loop to specify what to print
+
+    while show_5rows == 'yes':
+        print(df.iloc[x:y])
+        x += 5
+        y += 5
+        print(x)
+        print(y)
+        show_5rows = input('Would you like to see the next five rows? Yes or No?  ').lower()
+
 
 def main():
     while True:
         city, month, day = get_filters()
         df = load_data(city, month, day)
 
-        time_stats(df)
-        station_stats(df)
-        trip_duration_stats(df)
-        user_stats(df)
+
+        if city == 'washington':
+            tidy_data(df)
+            time_stats(df)
+            station_stats(df)
+            print("\nNo user stats are available for Washington")
+            trip_duration_stats(df)
+            display_raw_data(df)
+
+        else:
+            tidy_data(df)
+            time_stats(df)
+            station_stats(df)
+            trip_duration_stats(df)
+            user_stats(df)
+            display_raw_data(df)
+
+
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
