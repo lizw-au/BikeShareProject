@@ -1,15 +1,12 @@
 import time
 import pandas as pd
 import numpy as np
+import datetime
+import calendar
 
 CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
-
-##to do next
-##put 'break' clauses into the validation while loops in function get_filters
-##check if the city intput
-
 
 def get_filters():
     """
@@ -46,9 +43,6 @@ def get_filters():
     print('-'*40)
     return city, month, day
 
-
-
-
 def load_data(city, month, day):
     """
     Loads data for the specified city and filters by month and day if applicable.
@@ -71,7 +65,6 @@ def load_data(city, month, day):
     df['month'] = df['Start Time'].dt.month
     df['day_of_week'] = df['Start Time'].dt.weekday_name
 
-
     # filter by month if applicable
     if month != 'all':
         # use the index of the months list to get the corresponding int
@@ -89,9 +82,6 @@ def load_data(city, month, day):
 
     return df
 
-
-
-
 def time_stats(df):
 
     """Displays statistics on the most frequent times of travel."""
@@ -103,49 +93,29 @@ def time_stats(df):
     start_time = time.time()
 
     # display the most common month
-    ##use mode
-    print("the most common month for bike hire is: ")
-    print(df.month.mode().iloc[0])
+
+    print("\nThe most common month for bike hire is: ")
+
+    df['month'] = df['month'].apply(lambda x: calendar.month_name[x])
+    mode_month_hire = df.month.mode()
+    print(mode_month_hire.iloc[0])
 
     # display the most common day of week
-    ##today print days out as day instead of number
-    print("the most common day of the week is: ")
+    print("\nThe most common day of the week for bike hire is: ")
     print(df.day_of_week.mode().iloc[0])
 
     # display the most common start hour
-    print("the most common start hour is: ")
-    print(df.start_time.mode().iloc[0])
+    print("\nThe most common time to hire a bike is: ")
+    mode_start_time = df.start_time.mode().iloc[0]
+    print(mode_start_time.strftime('%X'))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
 
 def station_stats(df):
-    ##clean up column headings
-    #df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
+
     """Displays statistics on the most popular stations and trip."""
-
-        #<class 'pandas.core.frame.DataFrame'>
-        #Int64Index: 76022 entries, 0 to 299985
-        #Data columns (total 11 columns):
-        #unnamed:_0       76022 non-null int64
-        #start_time       76022 non-null datetime64[ns]
-        #end_time         76022 non-null object
-        #trip_duration    76022 non-null int64
-        #start_station    76022 non-null object
-        #end_station      76022 non-null object
-        #user_type        76022 non-null object
-        #gender           67387 non-null object
-        #birth_year       67629 non-null float64
-        #month            76022 non-null int64
-        #day_of_week      76022 non-null object
-        #dtypes: datetime64[ns](1), float64(1), int64(3), object(6)
-
-
-
-    #print info on DataFrame
-    print('\n \n most current state of dataframe info as follows: \n')
-    df.info()
 
     print('\nCalculating The Most Popular Stations and Trip...\n')
 
@@ -154,7 +124,6 @@ def station_stats(df):
     # display most commonly used start station
     print('\nThe most commonly used start station is: ')
     print(df.start_station.mode().iloc[0])
-
 
     # display most commonly used end station
     print('\nThe most commonly used end station is: ')
@@ -192,14 +161,10 @@ def trip_duration_stats(df):
     print('-'*40)
 
 def tidy_data(df):
-    #"""A function to tidy the data for review analysis."""
+    """A function to tidy the data for review analysis."""
 
     ##clean up column headings
     df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('(', '').str.replace(')', '')
-
-    #if city != 'washington':
-        #set birth_year column as Int64 - Moved to tidy_data(df) function
-    #    df['birth_year'] = df['birth_year'].astype(pd.Int64Dtype())
 
 def user_stats(df):
     """Displays statistics on bikeshare users."""
@@ -214,26 +179,26 @@ def user_stats(df):
     start_time = time.time()
 
     # Display counts of user types - output convert to string to remove dtype fomatting.
-    print("\n\nCount of user type as follows: ")
+    print("\nCount of user type as follows: ")
     print(df['user_type'].value_counts().to_string())
 
     ## TO DO - this paused program... I'm guessing with the Y axis code
     ##df.plot(x ='user_type', y=('user_type').count('user_type'), kind = 'bar')
 
     # Display counts of gender
-    print("\n\nCount of gender as follows: ")
+    print("\nCount of gender as follows: ")
     print(df.groupby('gender').size().to_string())
 
     # Display earliest, most recent, and most common year of birth
-    print('\n\nEarliest year of birth:')
+    print('\nEarliest year of birth:')
     min_yob = df.birth_year.min()
     print(min_yob)
 
-    print('\n\nMax year of birth: ')
+    print('\nMax year of birth: ')
     max_yob = df.birth_year.max()
     print(max_yob)
 
-    print('\n\nMost common year of birth: ')
+    print('\nMost common year of birth: ')
     mod_yob = df.birth_year.mode().iloc[0]
     print(mod_yob)
 
