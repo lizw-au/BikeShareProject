@@ -21,23 +21,23 @@ def get_filters():
     # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
 
 
-    city = input("What city would you like to analyze? Name city - Chicago, New York City or Washington: ").lower()
+    city = input("What city would you like to analyze? Name city - Chicago, New York City or Washington: \n").lower()
     while city not in('chicago', 'new york city', 'washington'):
-        print('You got it wrong pls try again')
-        city = input("What city would you like to analyze? Name city - Chicago, New York City or Washington ").lower()
+        print("That's not a valid entry please try again\n")
+        city = input("What city would you like to analyze? Name city - Chicago, New York City or Washington:   \n").lower()
 
 
     # get user input for month (all, january, february, ... , june)
-    month = input("What month would you like to analyze? Name one month, or type 'All'. Only January to June are available ").lower()
+    month = input("What month would you like to analyze? Name one month, or type 'All'. Only January to June are available:   \n").lower()
     while month not in('january', 'febuary', 'march', 'april', 'may', 'june','all'):
-        print('that\'s not a month - remember only first 6 month are available')
-        month = input("What month would you like to analyze? Name one month, or type 'All'. Only January to June are available ").lower()
+        print('That\'s not a valid entry - remember only first 6 month are available\n')
+        month = input("What month would you like to analyze? Name one month, or type 'All'. Only January to June are available:   \n").lower()
 
     #get day input
-    day = input("What day of week would you like to analyze? Name one day, or type 'All' ").lower()
+    day = input("What day of week would you like to analyze? Name one day, or type 'All' \n").lower()
     while day not in('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'all'):
-        print('that\'s not a day: please try again')
-        day = input("WHat day of the week would you like to analyze? Name on day or type 'all'")
+        print('That\'s not a valid entry: please try again.\n')
+        day = input("What day of the week would you like to analyze? Name on day or type 'all':  \n")
 
 
     print('-'*40)
@@ -213,14 +213,12 @@ def display_raw_data(df):
     x = 0
     y = 5
 
-    #while loop to specify what to print
+    #while loop to specify whether to print first five and subsequent 5
 
     while show_5rows == 'yes':
         print(df.iloc[x:y])
         x += 5
         y += 5
-        print(x)
-        print(y)
         show_5rows = input('Would you like to see the next five rows? Yes or No?  ').lower()
 
 
